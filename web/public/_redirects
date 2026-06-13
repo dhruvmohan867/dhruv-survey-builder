@@ -1,0 +1,5 @@
+# Proxy all API requests to the Cloudflare Worker backend
+/api/* https://sde-intern-task-api.dhruvms.workers.dev/api/:splat 200
+
+# Fallback for single page application (SPA) client-side routing
+/* /index.html 200
