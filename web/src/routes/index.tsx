@@ -1,16 +1,17 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
-  component: Home,
+  beforeLoad: async () => {
+    try {
+      const res = await fetch('/api/auth/me')
+      if (res.ok) {
+        throw redirect({ to: '/dashboard' })
+      }
+    } catch (e) {
+      if (e instanceof Response || (e && typeof e === 'object' && 'to' in e)) {
+        throw e
+      }
+    }
+    throw redirect({ to: '/login' })
+  },
 })
-
-function Home() {
-  return (
-    <main style={{ padding: 24, fontFamily: 'system-ui, sans-serif' }}>
-      <h1>Survey Builder — starter</h1>
-      <p>
-        Replace this with the app. See <code>README.md</code> at the repo root.
-      </p>
-    </main>
-  )
-}

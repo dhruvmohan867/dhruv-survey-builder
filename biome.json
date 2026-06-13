@@ -6,7 +6,13 @@
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": true
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!**/web/src/index.css",
+      "!**/web/src/routeTree.gen.ts",
+      "!**/api/worker-configuration.d.ts"
+    ]
   },
   "formatter": {
     "enabled": true,

@@ -9,38 +9,139 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SSurveyIdRouteImport } from './routes/s.$surveyId'
+import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
+import { Route as AuthSurveysCreateRouteImport } from './routes/_auth/surveys.create'
+import { Route as AuthSurveysSurveyIdResponsesRouteImport } from './routes/_auth/surveys.$surveyId.responses'
+import { Route as AuthSurveysSurveyIdEditRouteImport } from './routes/_auth/surveys.$surveyId.edit'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SSurveyIdRoute = SSurveyIdRouteImport.update({
+  id: '/s/$surveyId',
+  path: '/s/$surveyId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthDashboardRoute = AuthDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthSurveysCreateRoute = AuthSurveysCreateRouteImport.update({
+  id: '/surveys/create',
+  path: '/surveys/create',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthSurveysSurveyIdResponsesRoute =
+  AuthSurveysSurveyIdResponsesRouteImport.update({
+    id: '/surveys/$surveyId/responses',
+    path: '/surveys/$surveyId/responses',
+    getParentRoute: () => AuthRoute,
+  } as any)
+const AuthSurveysSurveyIdEditRoute = AuthSurveysSurveyIdEditRouteImport.update({
+  id: '/surveys/$surveyId/edit',
+  path: '/surveys/$surveyId/edit',
+  getParentRoute: () => AuthRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/dashboard': typeof AuthDashboardRoute
+  '/s/$surveyId': typeof SSurveyIdRoute
+  '/surveys/create': typeof AuthSurveysCreateRoute
+  '/surveys/$surveyId/edit': typeof AuthSurveysSurveyIdEditRoute
+  '/surveys/$surveyId/responses': typeof AuthSurveysSurveyIdResponsesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/dashboard': typeof AuthDashboardRoute
+  '/s/$surveyId': typeof SSurveyIdRoute
+  '/surveys/create': typeof AuthSurveysCreateRoute
+  '/surveys/$surveyId/edit': typeof AuthSurveysSurveyIdEditRoute
+  '/surveys/$surveyId/responses': typeof AuthSurveysSurveyIdResponsesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_auth': typeof AuthRouteWithChildren
+  '/login': typeof LoginRoute
+  '/_auth/dashboard': typeof AuthDashboardRoute
+  '/s/$surveyId': typeof SSurveyIdRoute
+  '/_auth/surveys/create': typeof AuthSurveysCreateRoute
+  '/_auth/surveys/$surveyId/edit': typeof AuthSurveysSurveyIdEditRoute
+  '/_auth/surveys/$surveyId/responses': typeof AuthSurveysSurveyIdResponsesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/dashboard'
+    | '/s/$surveyId'
+    | '/surveys/create'
+    | '/surveys/$surveyId/edit'
+    | '/surveys/$surveyId/responses'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/dashboard'
+    | '/s/$surveyId'
+    | '/surveys/create'
+    | '/surveys/$surveyId/edit'
+    | '/surveys/$surveyId/responses'
+  id:
+    | '__root__'
+    | '/'
+    | '/_auth'
+    | '/login'
+    | '/_auth/dashboard'
+    | '/s/$surveyId'
+    | '/_auth/surveys/create'
+    | '/_auth/surveys/$surveyId/edit'
+    | '/_auth/surveys/$surveyId/responses'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  SSurveyIdRoute: typeof SSurveyIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +149,65 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/s/$surveyId': {
+      id: '/s/$surveyId'
+      path: '/s/$surveyId'
+      fullPath: '/s/$surveyId'
+      preLoaderRoute: typeof SSurveyIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth/dashboard': {
+      id: '/_auth/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthDashboardRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/surveys/create': {
+      id: '/_auth/surveys/create'
+      path: '/surveys/create'
+      fullPath: '/surveys/create'
+      preLoaderRoute: typeof AuthSurveysCreateRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/surveys/$surveyId/responses': {
+      id: '/_auth/surveys/$surveyId/responses'
+      path: '/surveys/$surveyId/responses'
+      fullPath: '/surveys/$surveyId/responses'
+      preLoaderRoute: typeof AuthSurveysSurveyIdResponsesRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/surveys/$surveyId/edit': {
+      id: '/_auth/surveys/$surveyId/edit'
+      path: '/surveys/$surveyId/edit'
+      fullPath: '/surveys/$surveyId/edit'
+      preLoaderRoute: typeof AuthSurveysSurveyIdEditRouteImport
+      parentRoute: typeof AuthRoute
+    }
   }
 }
 
+interface AuthRouteChildren {
+  AuthDashboardRoute: typeof AuthDashboardRoute
+  AuthSurveysCreateRoute: typeof AuthSurveysCreateRoute
+  AuthSurveysSurveyIdEditRoute: typeof AuthSurveysSurveyIdEditRoute
+  AuthSurveysSurveyIdResponsesRoute: typeof AuthSurveysSurveyIdResponsesRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthDashboardRoute: AuthDashboardRoute,
+  AuthSurveysCreateRoute: AuthSurveysCreateRoute,
+  AuthSurveysSurveyIdEditRoute: AuthSurveysSurveyIdEditRoute,
+  AuthSurveysSurveyIdResponsesRoute: AuthSurveysSurveyIdResponsesRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRouteWithChildren,
+  LoginRoute: LoginRoute,
+  SSurveyIdRoute: SSurveyIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
