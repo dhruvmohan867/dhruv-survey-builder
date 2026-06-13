@@ -11,7 +11,7 @@
     {
       "binding": "DB",
       "database_name": "survey-builder",
-      "database_id": "local-dev"
+      "database_id": "8a54bec3-a2ac-488f-b88b-c49d46f45450"
     }
   ]
 }
